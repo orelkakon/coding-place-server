@@ -1,3 +1,7 @@
 {
-    "port":5000
+    "port":5000,
+    "mongo":{
+        "url": "mongodb+srv://orelkakon:ok207772922@codingplacedb.8kfxmlk.mongodb.net/?retryWrites=true&w=majority",
+        "dbName": "CodingPlace"
+    }
 }

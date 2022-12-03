@@ -1,13 +1,20 @@
 import express from "express";
 import config from "config"
-import { loggerInfo, loggerError } from "./src/utils/logger";
+import { findPostsController } from "./src/api/postsController";
+import { connect } from "./src/db";
 
 const app = express();
 const port = config.get("port")
+const main = async() => {
+    await connect()
+}
 
-loggerError("Fddfdf")
 app.get(['/', '/sanity'], async (req, res) => {
     res.send("'CodingPlace;' server is online :)")
 });
 
-app.listen(port, () => console.log(`App listening at port ${port}`));
+app.get('/find', findPostsController);
+
+main()
+.then(() => app.listen(port, () => console.log(`App listening at port ${port}`)))
+.catch(() => console.log("Failed to run server"));
