@@ -2,6 +2,7 @@ import { MongoClient } from "mongodb"
 import config from "config"
 import { loggerError, loggerInfo } from "../utils/logger"
 import * as mongo from 'mongodb';
+import { Post } from "../api/types";
 
 const mongoURL: string = config.get("mongo.url")
 const dbName: string = config.get("mongo.dbName")
@@ -20,11 +21,13 @@ export const disconnect = () => {
     client.close();
 }
 
-export const insertNewPost = async (collectionName: string, data) => {
+export const insertNewPost = async (collectionName: string, data: Post) => {
+    console.log(collectionName);
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
+    
     try {
-        const insertResult = await collection.insertMany(data);
+        const insertResult = await collection.insertOne(data);
         loggerInfo(`Success to insert ${data} to ${collectionName} in mongoDB`);
         return insertResult;
     } catch (error: any) {
