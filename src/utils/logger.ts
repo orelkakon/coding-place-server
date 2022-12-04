@@ -18,18 +18,20 @@ const logError = winston.createLogger({
     ],
 });
 
-export const loggerInfo = (msg) => {
+export const loggerInfo = (msg: any, metadata = {}) => {
     logInfo.log({
         level: "info",
         message: msg,
-        timestamp: new Date(new Date().getTime() + 2 * 60 * 60 * 1000)
+        timestamp: new Date(new Date().getTime() + 2 * 60 * 60 * 1000),
+        metadata: metadata
     })
 }
 
-export const loggerError = (msg) => {
+export const loggerError = (msg: any, metadata = {}) => {
     logError.log({
         level: "error",
         message: msg,
-        timestamp: new Date(new Date().getTime() + 2 * 60 * 60 * 1000)
+        timestamp: new Date(new Date().getTime() + 2 * 60 * 60 * 1000),
+        metadata: metadata
     })
 }
