@@ -2,7 +2,7 @@ import express from "express";
 import config from "config"
 import { findPostsController, insertPostsController, deletePostsController, updatePostsController } from "./src/api/postsController";
 import { connect } from "./src/db";
-import { findPostSchema } from "./src/api/postsSchema"
+import { findPostSchema, removePostSchema } from "./src/api/postsSchema"
 import { validate } from "./src/api/validator";
 
 const app = express();
@@ -18,7 +18,7 @@ app.get(['/', '/sanity'], async (req, res) => {
 app.get('/findpost/:type', validate(findPostSchema), findPostsController);
 app.get('/findpost/:type/:id', validate(findPostSchema), findPostsController);
 app.post('/insertpost', insertPostsController);
-app.delete('/removepost', deletePostsController);
+app.delete('/removepost/:type/:id', validate(removePostSchema), deletePostsController);
 app.put('/updatepost', updatePostsController);
 
 main()

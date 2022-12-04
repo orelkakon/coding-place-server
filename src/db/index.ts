@@ -51,11 +51,11 @@ export const findPosts = async (collectionName: string, id?: string | undefined)
     }
 }
 
-export const removePosts = async (collectionName: string, filter = {}) => {
+export const removePosts = async (collectionName: string, id: string) => {
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
     try {
-        const results = await collection.deleteMany(filter);
+        const results = await collection.deleteOne({_id: new mongo.ObjectId(id)});
         loggerInfo(`Success to delete ${JSON.stringify(results)} on ${collectionName} in mongoDB`);
         return results;
     } catch (error: any) {
