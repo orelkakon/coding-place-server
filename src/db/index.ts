@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb"
 import config from "config"
 import { loggerError, loggerInfo } from "../utils/logger"
-var mongo = require('mongodb');
+import * as mongo from 'mongodb';
 
 const mongoURL: string = config.get("mongo.url")
 const dbName: string = config.get("mongo.dbName")
