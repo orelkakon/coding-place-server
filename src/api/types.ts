@@ -2,7 +2,9 @@ export type Comment = {
     content: string,
     author: string,
     images: string[],
-    date: Date
+    date: Date,
+    pVote: string[],
+    downVote: string[]
 }
 
 export type Post = {
@@ -12,5 +14,7 @@ export type Post = {
     tags: string[],
     images: string[],
     comments: Comment[],
-    date: Date
+    date: Date,
+    upVote: string[],
+    downVote: string[]
 }

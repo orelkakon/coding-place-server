@@ -14,6 +14,20 @@ export const removePostSchema = yup.object({
     })
 });
 
+export const updatePostSchema = yup.object({
+    params: yup.object({
+        id: yup.string().required(),
+        type: yup.mixed().oneOf(["jobPosts", "journalPosts", "questionPosts"])
+    }),
+    body: yup.object({
+        title: yup.string(),
+        content: yup.string(),
+        tags: yup.array().of(
+            yup.string()
+        ),
+    })
+});
+
 export const insertNewPostSchema = yup.object({
     params: yup.object({
         type: yup.mixed().oneOf(["jobPosts", "journalPosts", "questionPosts"])

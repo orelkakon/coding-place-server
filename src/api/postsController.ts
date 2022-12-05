@@ -1,9 +1,8 @@
-import { loggerError } from "../utils/logger"
 import { findPosts, insertNewPost, removePosts, updatePosts } from "./../db"
 import { Post } from "./types"
 
 export const insertPostsController = async (req, res) => {
-    const type = req.params.type    
+    const type = req.params.type
     const title = req.body.title
     const content = req.body.content
     const author = req.body.author
@@ -12,8 +11,8 @@ export const insertPostsController = async (req, res) => {
 
     try {
         const newPost: Post = {
-            title, content, author, tags, images, comments: [], date: new Date()
-        }        
+            title, content, author, tags, images, comments: [], date: new Date(), upVote: [], downVote: []
+        }
         const results = await insertNewPost(type, newPost)
         res.send(results)
     } catch (error) {
@@ -22,12 +21,12 @@ export const insertPostsController = async (req, res) => {
 }
 
 export const findPostsController = async (req, res) => {
-    const postId =  req.params.id
+    const postId = req.params.id
     const postType = req.params.type
-    
+
     try {
         const results = await findPosts(postType, postId)
-        if(results.length > 0)
+        if (results.length > 0)
             res.send(results)
         else {
             res.send([])
@@ -38,12 +37,12 @@ export const findPostsController = async (req, res) => {
 }
 
 export const deletePostsController = async (req, res) => {
-    const postId =  req.params.id
+    const postId = req.params.id
     const postType = req.params.type
-    
+
     try {
         const results = await removePosts(postType, postId)
-        if(results)
+        if (results)
             res.send(results)
         else {
             res.send([])
@@ -54,5 +53,23 @@ export const deletePostsController = async (req, res) => {
 }
 
 export const updatePostsController = async (req, res) => {
-    res.send()
+    const postId = req.params.id
+    const postType = req.params.type
+
+    try {
+        const title = req.body.title
+        const content = req.body.content
+        const tags = req.body.tags
+        const updateObject = {
+            title, content, tags
+        }
+        const results = await updatePosts(postType, postId, updateObject)
+        if (results)
+            res.send(results)
+        else {
+            res.send([])
+        }
+    } catch (error) {
+        res.sendStatus(500)
+    }
 }
