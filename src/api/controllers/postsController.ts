@@ -11,7 +11,7 @@ export const insertPostsController = async (req, res) => {
 
     try {
         const newPost: Post = {
-            title, content, author, tags, images, comments: [], date: new Date(), upVote: [], downVote: []
+            title, content, author, tags, images, comments: [], date: new Date(), upVote: [], downVote: [], closed: false
         }
         const results = await insertNewPost(type, newPost)
         res.send(results)

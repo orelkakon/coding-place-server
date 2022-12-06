@@ -3,7 +3,9 @@ import config from "config";
 import cors from "cors";
 import { connect } from "./src/db";
 import { postsRouter } from "./src/api/routes/posts"
+import { votesRouter } from "./src/api/routes/votes"
 import { loggerError, loggerInfo } from "./src/utils/logger";
+
 const app = express();
 app.use(cors())
 app.use(express.json());
@@ -18,6 +20,7 @@ const start = async () => {
     });
 
     app.use('/api/posts', postsRouter)
+    app.use('/api/votes', votesRouter)
 }
 
 

@@ -3,9 +3,8 @@ export type Comment = {
     author: string,
     images: string[],
     date: Date,
-    pVote: string[],
-    downVote: string[]
-}
+    marked: boolean 
+}   
 
 export type Post = {
     title: string, 
@@ -16,5 +15,6 @@ export type Post = {
     comments: Comment[],
     date: Date,
     upVote: string[],
-    downVote: string[]
+    downVote: string[],
+    closed: boolean
 }
