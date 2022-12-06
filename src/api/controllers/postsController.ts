@@ -1,5 +1,5 @@
-import { findPosts, insertNewPost, removePosts, updatePosts } from "./../db"
-import { Post } from "./types"
+import { findPosts, insertNewPost, removePosts, updatePosts } from "./../../db/postsQueries"
+import { Post } from "./../utils/types"
 
 export const insertPostsController = async (req, res) => {
     const type = req.params.type
