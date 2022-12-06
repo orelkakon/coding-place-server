@@ -1,18 +1,24 @@
 import * as mongo from "mongodb";
 import config from "config";
-import { Post } from "../../api/utils/types";
 import { loggerError, loggerInfo } from "../../utils/logger";
 import { client } from "./.."
+import { Comment } from "../../api/utils/types";
 
 const dbName: string = config.get("mongo.dbName");
 
-export const insertNewPost = async (collectionName: string, data: Post) => {
+export const insertNewComment = async (collectionName: string, id: string, data: Comment) => {
     console.log(collectionName);
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
 
     try {
-        const insertResult = await collection.insertOne(data);
+        const updateData = {
+            $addToSet: { comments: data.content },
+        };
+        const insertResult = await collection.updateOne(
+            { _id: new mongo.ObjectId(id) },
+            { updateData }
+        );
         loggerInfo(`Success to insert ${data} to ${collectionName} in mongoDB`);
         return insertResult;
     } catch (error: any) {
@@ -23,42 +29,7 @@ export const insertNewPost = async (collectionName: string, data: Post) => {
     }
 };
 
-export const findPosts = async (
-    collectionName: string,
-    id?: string | undefined
-) => {
-    const db = client.db(dbName);
-    const collection = db.collection(collectionName);
-
-    try {
-        if (!id) {
-            const results = await collection.find({}).toArray();
-            loggerInfo(
-                `Success to find ${JSON.stringify(
-                    results
-                )} on ${collectionName} in mongoDB`
-            );
-            return results;
-        }
-        const results = await collection
-            .find({ _id: new mongo.ObjectId(id) })
-            .toArray();
-        loggerInfo(
-            `Success to find ${JSON.stringify(
-                results
-            )} on ${collectionName} in mongoDB`
-        );
-        return results;
-    } catch (error: any) {
-        loggerError(
-            `Failed to find something on ${collectionName} in mongoDB`,
-            error
-        );
-        throw error;
-    }
-};
-
-export const removePosts = async (collectionName: string, id: string) => {
+export const removeComment = async (collectionName: string, id: string) => { //need to update fot comment
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
     try {
@@ -77,7 +48,7 @@ export const removePosts = async (collectionName: string, id: string) => {
     }
 };
 
-export const updatePosts = async (
+export const updateComment = async ( //need to update fot comment
     collectionName: string,
     id: string,
     update = {}
@@ -90,7 +61,7 @@ export const updatePosts = async (
         };
         const results = await collection.updateOne(
             { _id: new mongo.ObjectId(id) },
-            updateData
+            update
         );
         loggerInfo(
             `Success to update ${JSON.stringify(

@@ -1,7 +1,6 @@
 export type Comment = {
     content: string,
     author: string,
-    images: string[],
     date: Date,
     marked: boolean 
 }   
@@ -17,4 +16,11 @@ export type Post = {
     upVote: string[],
     downVote: string[],
     closed: boolean
+}
+
+export type User = {
+    username: string,
+    password: string,
+    email: string,
+    phone: string
 }

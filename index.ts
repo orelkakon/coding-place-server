@@ -4,6 +4,7 @@ import cors from "cors";
 import { connect } from "./src/db";
 import { postsRouter } from "./src/api/routes/posts"
 import { votesRouter } from "./src/api/routes/votes"
+import { commentsRouter } from "./src/api/routes/comments"
 import { loggerError, loggerInfo } from "./src/utils/logger";
 
 const app = express();
@@ -21,6 +22,7 @@ const start = async () => {
 
     app.use('/api/posts', postsRouter)
     app.use('/api/votes', votesRouter)
+    app.use('/api/comments', commentsRouter)
 }
 
 
