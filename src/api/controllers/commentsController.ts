@@ -1,4 +1,4 @@
-import { insertNewComment, deleteComment, updateComment } from "../../db/commentsQueries"
+import { insertNewComment, deleteComment, updateComment, markComment } from "../../db/commentsQueries"
 import { Comment } from "../utils/types"
 import { v4 as uuidv4 } from 'uuid';
 
@@ -45,4 +45,18 @@ export const updateCommentController = async (req, res) => {
         res.sendStatus(500)
     }
 }
+
+export const markCommentController = async (req, res) => {
+    const type = req.params.type
+    const id = req.params.id
+    const commentId = req.body.commentId
+    
+    try {
+        const results = await markComment(type, id, commentId)
+        res.send(results)
+    } catch (error) {
+        res.sendStatus(500)
+    }
+}
+
 

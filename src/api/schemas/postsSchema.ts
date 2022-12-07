@@ -44,3 +44,10 @@ export const insertNewPostSchema = yup.object({
         )
     })
 });
+
+export const closePostSchema = yup.object({
+    params: yup.object({
+        id: yup.string().required(),
+        type: yup.mixed().oneOf(["jobPosts", "journalPosts", "questionPosts"])
+    })
+});

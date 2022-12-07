@@ -1,4 +1,4 @@
-import { findPosts, insertNewPost, removePosts, updatePosts } from "./../../db/postsQueries"
+import { closePost, findPosts, insertNewPost, removePosts, updatePosts } from "./../../db/postsQueries"
 import { Post } from "./../utils/types"
 
 export const insertPostsController = async (req, res) => {
@@ -64,6 +64,22 @@ export const updatePostsController = async (req, res) => {
             title, content, tags
         }
         const results = await updatePosts(postType, postId, updateObject)
+        if (results)
+            res.send(results)
+        else {
+            res.send([])
+        }
+    } catch (error) {
+        res.sendStatus(500)
+    }
+}
+
+export const closePostsController = async (req, res) => {
+    const postId = req.params.id
+    const postType = req.params.type
+
+    try {
+        const results = await closePost(postType, postId)
         if (results)
             res.send(results)
         else {

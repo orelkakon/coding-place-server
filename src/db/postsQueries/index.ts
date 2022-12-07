@@ -105,3 +105,31 @@ export const updatePosts = async (
         );
     }
 };
+
+export const closePost = async (
+    collectionName: string,
+    id: string,
+) => {
+    const db = client.db(dbName);
+    const collection = db.collection(collectionName);
+    try {
+        const updateData = {
+            $set: { closed: true },
+        };
+        const results = await collection.updateOne(
+            { _id: new mongo.ObjectId(id) },
+            updateData
+        );
+        loggerInfo(
+            `Success to update ${JSON.stringify(
+                results
+            )} on ${collectionName} in mongoDB`
+        );
+        return results;
+    } catch (error: any) {
+        loggerError(
+            `Failed to update something on ${collectionName} in mongoDB`,
+            error
+        );
+    }
+};

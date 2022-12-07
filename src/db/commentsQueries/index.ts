@@ -3,6 +3,7 @@ import config from "config";
 import { loggerError, loggerInfo } from "../../utils/logger";
 import { client } from "./.."
 import { Comment } from "../../api/utils/types";
+import { closePost } from "../postsQueries";
 
 const dbName: string = config.get("mongo.dbName");
 
@@ -65,6 +66,36 @@ export const updateComment = async (
             { _id: new mongo.ObjectId(id), "comments.commentId" : commentId },
             updateData
         );
+        loggerInfo(
+            `Success to update ${JSON.stringify(
+                results
+            )} on ${collectionName} in mongoDB`
+        );
+        return results;
+    } catch (error: any) {
+        loggerError(
+            `Failed to update something on ${collectionName} in mongoDB`,
+            error
+        );
+    }
+};
+
+export const markComment = async ( 
+    collectionName: string,
+    id: string,
+    commentId: string,
+) => {
+    const db = client.db(dbName);
+    const collection = db.collection(collectionName);
+    try {
+        const updateData = {
+            $set: { "comments.$.marked": true },
+        };
+        const results = await collection.updateOne(
+            { _id: new mongo.ObjectId(id), "comments.commentId" : commentId },
+            updateData
+        );
+        await closePost(collectionName, id)
         loggerInfo(
             `Success to update ${JSON.stringify(
                 results
