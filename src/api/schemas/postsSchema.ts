@@ -42,13 +42,5 @@ export const insertNewPostSchema = yup.object({
         images: yup.array().of(
             yup.string()
         )
-        // comments: yup.object({
-        //     content: yup.string(),
-        //     author: yup.string(),
-        //     images: yup.array().of(
-        //         yup.string()
-        //     ),
-        //     date: yup.date()
-        // }),
     })
 });

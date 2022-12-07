@@ -29,11 +29,12 @@ export const insertNewComment = async (collectionName: string, id: string, data:
     }
 };
 
-export const removeComment = async (collectionName: string, id: string) => { //need to update fot comment
+// maybe need to fix!
+export const deleteComment = async (collectionName: string, id: string, commentId: string) => {
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
     try {
-        const results = await collection.deleteOne({ _id: new mongo.ObjectId(id) });
+        const results = await collection.updateOne({ _id: new mongo.ObjectId(id) }, { $unset: { "comments.commentId": commentId } });
         loggerInfo(
             `Success to delete ${JSON.stringify(
                 results
@@ -48,20 +49,21 @@ export const removeComment = async (collectionName: string, id: string) => { //n
     }
 };
 
-export const updateComment = async ( //need to update fot comment
+export const updateComment = async ( 
     collectionName: string,
     id: string,
-    update = {}
+    commentId: string,
+    newContent: string
 ) => {
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
     try {
         const updateData = {
-            $set: { update },
+            $set: { "comments.$.content": newContent },
         };
         const results = await collection.updateOne(
-            { _id: new mongo.ObjectId(id) },
-            update
+            { _id: new mongo.ObjectId(id), "comments.commentId" : commentId },
+            updateData
         );
         loggerInfo(
             `Success to update ${JSON.stringify(

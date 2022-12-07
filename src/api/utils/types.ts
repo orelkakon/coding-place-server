@@ -1,4 +1,5 @@
 export type Comment = {
+    commentId: string,
     content: string,
     author: string,
     date: Date,
