@@ -3,5 +3,9 @@
     "mongo":{
         "url": "mongodb+srv://orelkakon:ok207772922@codingplacedb.8kfxmlk.mongodb.net/?retryWrites=true&w=majority",
         "dbName": "CodingPlace"
+    },
+    "auth": {
+        "salt": 10,
+        "secret": "orel_kakon_secret"
     }
 }

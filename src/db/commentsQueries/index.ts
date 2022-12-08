@@ -8,7 +8,6 @@ import { closePost } from "../postsQueries";
 const dbName: string = config.get("mongo.dbName");
 
 export const insertNewComment = async (collectionName: string, id: string, data: Comment) => {
-    console.log(collectionName);
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
 

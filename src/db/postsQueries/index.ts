@@ -7,7 +7,6 @@ import { client } from "./.."
 const dbName: string = config.get("mongo.dbName");
 
 export const insertNewPost = async (collectionName: string, data: Post) => {
-    console.log(collectionName);
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
 
