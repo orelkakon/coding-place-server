@@ -12,29 +12,29 @@ export const insertNewComment = async (collectionName: string, id: string, data:
     const collection = db.collection(collectionName);
 
     try {
-        const updateData = {
-            $addToSet: { comments: data.content },
-        };
         const insertResult = await collection.updateOne(
             { _id: new mongo.ObjectId(id) },
-            { updateData }
+            { $push: { comments: data } }
         );
-        loggerInfo(`Success to insert ${data} to ${collectionName} in mongoDB`);
+        loggerInfo(`Success to insert ${JSON.stringify(data)} to ${collectionName} in mongoDB`);
         return insertResult;
     } catch (error: any) {
         loggerError(
-            `Failed to insert ${data} to ${collectionName} in mongoDB`,
+            `Failed to insert ${JSON.stringify(data)} to ${collectionName} in mongoDB` +
             error
         );
     }
 };
 
-// maybe need to fix!
 export const deleteComment = async (collectionName: string, id: string, commentId: string) => {
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
     try {
-        const results = await collection.updateOne({ _id: new mongo.ObjectId(id) }, { $unset: { "comments.commentId": commentId } });
+        const results = await collection.updateOne(
+            { _id: new mongo.ObjectId(id) },
+            {
+                $pull: { comments: { commentId } }
+            });
         loggerInfo(
             `Success to delete ${JSON.stringify(
                 results
@@ -43,13 +43,13 @@ export const deleteComment = async (collectionName: string, id: string, commentI
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to delete something on ${collectionName} in mongoDB`,
+            `Failed to delete something on ${collectionName} in mongoDB` +
             error
         );
     }
 };
 
-export const updateComment = async ( 
+export const updateComment = async (
     collectionName: string,
     id: string,
     commentId: string,
@@ -62,7 +62,7 @@ export const updateComment = async (
             $set: { "comments.$.content": newContent },
         };
         const results = await collection.updateOne(
-            { _id: new mongo.ObjectId(id), "comments.commentId" : commentId },
+            { _id: new mongo.ObjectId(id), "comments.commentId": commentId },
             updateData
         );
         loggerInfo(
@@ -79,7 +79,7 @@ export const updateComment = async (
     }
 };
 
-export const markComment = async ( 
+export const markComment = async (
     collectionName: string,
     id: string,
     commentId: string,
@@ -91,7 +91,7 @@ export const markComment = async (
             $set: { "comments.$.marked": true },
         };
         const results = await collection.updateOne(
-            { _id: new mongo.ObjectId(id), "comments.commentId" : commentId },
+            { _id: new mongo.ObjectId(id), "comments.commentId": commentId },
             updateData
         );
         await closePost(collectionName, id)

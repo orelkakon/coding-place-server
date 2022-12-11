@@ -85,8 +85,8 @@ export const updatePosts = async (
     const collection = db.collection(collectionName);
     try {
         const updateData = {
-            $set: { update },
-        };
+            $set: { ...update }
+        };  
         const results = await collection.updateOne(
             { _id: new mongo.ObjectId(id) },
             updateData

@@ -8,14 +8,14 @@ import { loggerError } from "../../utils/logger";
 
 const dbName: string = config.get("mongo.dbName");
 const { secret } = config.get<AuthConfig>("auth")
+const collectionName = "users"
+const db = client.db(dbName);
 
 interface JwtPayload {
     type: string
 }
 
 export const verifyUserLogin = async (username: string, password: string) => {
-    const collectionName = "users"
-    const db = client.db(dbName);
     const collection = db.collection(collectionName);
     try {
         const user = await collection.findOne({ username })
@@ -28,7 +28,7 @@ export const verifyUserLogin = async (username: string, password: string) => {
         }
         return { status: 'error', error: 'invalid password' }
     } catch (error) {
-        console.log(error);
+        loggerError(error);
         return { status: 'error', error: 'timed out' }
     }
 }
@@ -43,3 +43,37 @@ export const verifyToken = (token: string) => {
         return false;
     }
 }
+
+export const checkDuplicateUsernameOrEmail = (req, res, next) => {
+    const collection = db.collection(collectionName);
+    // Username
+    collection.findOne({
+        username: req.body.username
+    }, ((err, user) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+
+        if (user) {
+            res.status(400).send({ message: "Failed! Username is already in use!" });
+            return;
+        }
+
+        // Email
+        collection.findOne({
+            email: req.body.email
+        }, ((err, user) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+
+            if (user) {
+                res.status(400).send({ message: "Failed! Email is already in use!" });
+                return;
+            }
+            next();
+        }));
+    }));
+}; 

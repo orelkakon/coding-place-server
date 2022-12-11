@@ -3,10 +3,10 @@ import bcrypt from "bcryptjs";
 import { signUp, signIn } from "../../db/authQueries"
 import { AuthConfig } from "../../utils/types"
 import { User } from "../utils/types";
-import { verifyUserLogin } from "./../../db/authQueries/utils"
+import { checkDuplicateUsernameOrEmail, verifyUserLogin } from "./../../db/authQueries/utils"
 const { salt } = config.get<AuthConfig>("auth.salt")
 
-export const signUpController = async (req, res) => {
+export const signUpController = async (req, res, next) => {
     const username = req.body.username
     const password = req.body.password
     const email = req.body.email
@@ -17,6 +17,7 @@ export const signUpController = async (req, res) => {
         const data: User = {
             username, password: passwordHashed, email, phone
         }
+        checkDuplicateUsernameOrEmail(req, res, next)
         const results = await signUp(data)
         res.send(results)
     } catch (error) {
