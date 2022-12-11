@@ -20,8 +20,7 @@ export const insertNewComment = async (collectionName: string, id: string, data:
         return insertResult;
     } catch (error: any) {
         loggerError(
-            `Failed to insert ${JSON.stringify(data)} to ${collectionName} in mongoDB` +
-            error
+            `Failed to insert ${JSON.stringify(data)} to ${collectionName} in mongoDB. ${error}`
         );
     }
 };
@@ -43,8 +42,7 @@ export const deleteComment = async (collectionName: string, id: string, commentI
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to delete something on ${collectionName} in mongoDB` +
-            error
+            `Failed to delete something on ${collectionName} in mongoDB. ${error}`
         );
     }
 };
@@ -73,8 +71,7 @@ export const updateComment = async (
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to update something on ${collectionName} in mongoDB`,
-            error
+            `Failed to update something on ${collectionName} in mongoDB. ${error}`
         );
     }
 };
@@ -103,8 +100,7 @@ export const markComment = async (
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to update something on ${collectionName} in mongoDB`,
-            error
+            `Failed to update something on ${collectionName} in mongoDB. ${error}`
         );
     }
 };

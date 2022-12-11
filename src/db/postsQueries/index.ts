@@ -16,8 +16,7 @@ export const insertNewPost = async (collectionName: string, data: Post) => {
         return insertResult;
     } catch (error: any) {
         loggerError(
-            `Failed to insert ${data} to ${collectionName} in mongoDB`,
-            error
+            `Failed to insert ${data} to ${collectionName} in mongoDB. ${error}`
         );
     }
 };
@@ -50,8 +49,7 @@ export const findPosts = async (
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to find something on ${collectionName} in mongoDB`,
-            error
+            `Failed to find something on ${collectionName} in mongoDB. ${error}`
         );
         throw error;
     }
@@ -70,8 +68,7 @@ export const removePosts = async (collectionName: string, id: string) => {
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to delete something on ${collectionName} in mongoDB`,
-            error
+            `Failed to delete something on ${collectionName} in mongoDB. ${error}`
         );
     }
 };
@@ -99,8 +96,7 @@ export const updatePosts = async (
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to update something on ${collectionName} in mongoDB`,
-            error
+            `Failed to update something on ${collectionName} in mongoDB. ${error}`
         );
     }
 };
@@ -127,8 +123,7 @@ export const closePost = async (
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to update something on ${collectionName} in mongoDB`,
-            error
+            `Failed to update something on ${collectionName} in mongoDB. ${error}`
         );
     }
 };

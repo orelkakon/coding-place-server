@@ -1,6 +1,5 @@
 import * as mongo from "mongodb";
 import config from "config";
-import { Post } from "../../api/utils/types";
 import { loggerError, loggerInfo } from "../../utils/logger";
 import { client } from "./.."
 
@@ -19,10 +18,12 @@ export const updatePostVote = async (
         if (action === "up") {
             updateData = {
                 $addToSet: { upVote: user },
+                $pull: { downVote: user }
             };
         } else {
             updateData = {
-                $pull: { downVote: user },
+                $addToSet: { downVote: user },
+                $pull: { upVote: user }
             };
         }
         const results = await collection.updateOne(
@@ -37,8 +38,7 @@ export const updatePostVote = async (
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to update something on ${collectionName} in mongoDB`,
-            error
+            `Failed to update something on ${collectionName} in mongoDB. ${error}`
         );
     }
 };

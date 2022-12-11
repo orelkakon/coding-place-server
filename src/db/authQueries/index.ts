@@ -16,8 +16,7 @@ export const signUp = async (data: User) => {
         return insertResult;
     } catch (error: any) {
         loggerError(
-            `Failed to insert new user to mongoDB`,
-            error
+            `Failed to insert new user to mongoDB. ${error}`
         );
     }
 };
@@ -35,8 +34,7 @@ export const signIn = async (data: User) => {
         return insertResult;
     } catch (error: any) {
         loggerError(
-            `Failed to insert new user to mongoDB`,
-            error
+            `Failed to insert new user to mongoDB. ${error}`
         );
     }
 };
