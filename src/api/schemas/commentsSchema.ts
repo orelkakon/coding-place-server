@@ -2,7 +2,7 @@ import * as yup from 'yup';
 
 export const insertCommentsSchema = yup.object({
     params: yup.object({
-        id: yup.string(),
+        id: yup.string().required(),
         type: yup.mixed().oneOf(["jobPosts", "journalPosts", "questionPosts"])
     }),
     body: yup.object({
@@ -13,7 +13,7 @@ export const insertCommentsSchema = yup.object({
 
 export const deleteCommentsSchema = yup.object({
     params: yup.object({
-        id: yup.string(),
+        id: yup.string().required(),
         type: yup.mixed().oneOf(["jobPosts", "journalPosts", "questionPosts"])
     }),
     body: yup.object({
@@ -23,7 +23,7 @@ export const deleteCommentsSchema = yup.object({
 
 export const updateCommentsSchema = yup.object({
     params: yup.object({
-        id: yup.string(),
+        id: yup.string().required(),
         type: yup.mixed().oneOf(["jobPosts", "journalPosts", "questionPosts"])
     }),
     body: yup.object({
@@ -33,7 +33,7 @@ export const updateCommentsSchema = yup.object({
 });
 export const markCommentsSchema = yup.object({
     params: yup.object({
-        id: yup.string(),
+        id: yup.string().required(),
         type: yup.mixed().oneOf(["jobPosts", "journalPosts", "questionPosts"])
     }),
     body: yup.object({
