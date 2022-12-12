@@ -25,18 +25,10 @@ const start = async () => {
     app.get('/sanity', async (req, res) => {
         res.send("'CodingPlace;' server is online :)")
     });
-    app.get('/', (req, res) => {
-        const { token } = req.cookies;
-        if (verifyToken(token)) {
-            return res.render('home');
-        } else {
-            res.redirect('/login')
-        }
-    })
 
-    app.use('/api/posts', postsRouter)
-    app.use('/api/votes', votesRouter)
-    app.use('/api/comments', commentsRouter)
+    app.use('/api/posts', verifyToken, postsRouter)
+    app.use('/api/votes', verifyToken, votesRouter)
+    app.use('/api/comments', verifyToken, commentsRouter)
     app.use('/api/auth', authRouter)
 
 }

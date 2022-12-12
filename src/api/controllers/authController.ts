@@ -3,21 +3,19 @@ import bcrypt from "bcryptjs";
 import { signUp, signIn } from "../../db/authQueries"
 import { AuthConfig } from "../../utils/types"
 import { User } from "../utils/types";
-import { checkDuplicateUsernameOrEmail, verifyUserLogin } from "./../../db/authQueries/utils"
+import { verifyUserLogin } from "./../../db/authQueries/utils"
 const { salt } = config.get<AuthConfig>("auth.salt")
 
 export const signUpController = async (req, res, next) => {
-    const username = req.body.username
+    const username = req.body.user
     const password = req.body.password
     const email = req.body.email
     const phone = req.body.phone
-    const passwordHashed = await bcrypt.hash(password, salt);
-
+    const passwordHashed = bcrypt.hashSync(password, salt);
     try {
         const data: User = {
             username, password: passwordHashed, email, phone
         }
-        checkDuplicateUsernameOrEmail(req, res, next)
         const results = await signUp(data)
         res.send(results)
     } catch (error) {
@@ -26,19 +24,20 @@ export const signUpController = async (req, res, next) => {
 }
 
 export const signInController = async (req, res) => {
-    const username = req.body.username
+    const username = req.body.user
     const password = req.body.password
 
     try {
-        const response = await verifyUserLogin(username, password);
+        const response = await verifyUserLogin(username, password);        
         if (response.status === 'ok') {
             // storing our JWT web token (response.data) as a cookie in our browser
             res.cookie('token', response.data, { maxAge: 2 * 60 * 60 * 1000, httpOnly: true });
-            res.redirect('/');
+            res.send("successfully login");
         } else {
-            res.json(response);
+            res.status(response.code).send(response.error);
+            return;
         }
-    } catch (error) {
+    } catch (error) {        
         res.sendStatus(500)
     }
 }

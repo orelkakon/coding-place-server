@@ -11,44 +11,47 @@ const { secret } = config.get<AuthConfig>("auth")
 const collectionName = "users"
 const db = client.db(dbName);
 
-interface JwtPayload {
-    type: string
-}
-
 export const verifyUserLogin = async (username: string, password: string) => {
     const collection = db.collection(collectionName);
     try {
         const user = await collection.findOne({ username })
         if (!user) {
-            return { status: 'error', error: 'user not found' }
+            return { status: 'error', code: 404, error: 'user not found' }
         }
-        if (await bcrypt.compare(password, user.password)) {
+        if (bcrypt.compareSync(password, user.password)) {
             const token = jwt.sign({ id: user._id, username: user.username, type: 'user' }, secret, { expiresIn: '2h' })
             return { status: 'ok', data: token }
         }
-        return { status: 'error', error: 'invalid password' }
+        return { status: 'error', code: 401, error: 'invalid password' }
     } catch (error) {
         loggerError(error);
-        return { status: 'error', error: 'timed out' }
+        return { status: 'error', code: 500, error: 'timed out' }
     }
 }
 
-export const verifyToken = (token: string) => {
-    try {
-        const verify = jwt.verify(token, secret) as JwtPayload;
-        if (verify.type === 'user') { return true; }
-        else { return false };
-    } catch (error) {
-        loggerError("Failed to verify token", JSON.stringify(error));
-        return false;
+export const verifyToken = (req, res, next) => {
+    let token = req.headers["x-access-token"];
+
+    if (!token) {
+        return res.status(403).send({ message: "No token provided!" });
     }
-}
+
+    jwt.verify(token, secret, (err, decoded) => {
+        if (err) {
+            return res.status(401).send({ message: "Unauthorized!" });
+        }
+        console.log(decoded);
+        
+        req.userId = decoded.id;
+        next();
+    });
+};
 
 export const checkDuplicateUsernameOrEmail = (req, res, next) => {
     const collection = db.collection(collectionName);
     // Username
     collection.findOne({
-        username: req.body.username
+        username: req.body.user
     }, ((err, user) => {
         if (err) {
             res.status(500).send({ message: err });
@@ -56,7 +59,7 @@ export const checkDuplicateUsernameOrEmail = (req, res, next) => {
         }
 
         if (user) {
-            res.status(400).send({ message: "Failed! Username is already in use!" });
+            res.status(400).send({ message: "Failed! User is already in use!" });
             return;
         }
 
