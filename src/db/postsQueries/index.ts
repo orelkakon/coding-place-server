@@ -3,7 +3,7 @@ import config from "config";
 import { Post } from "../../api/utils/types";
 import { loggerError, loggerInfo } from "../../utils/logger";
 import { client } from "./.."
-
+import { MongoFilter } from "./../../utils/types"
 const dbName: string = config.get("mongo.dbName");
 
 export const insertNewPost = async (collectionName: string, data: Post) => {
@@ -23,21 +23,21 @@ export const insertNewPost = async (collectionName: string, data: Post) => {
 
 export const findPosts = async (
     collectionName: string,
-    id?: string | undefined
+    id?: string | undefined,
+    username?: string | undefined
 ) => {
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
-
     try {
         if (!id) {
-            const results = await collection.find({}).toArray();
+            let filter = username ? { author: username } : {}
+            const results = await collection.find(filter).toArray();
             loggerInfo(
-                `Success to find ${JSON.stringify(
-                    results
-                )} on ${collectionName} in mongoDB`
+                `Success to find post on ${collectionName} in mongoDB`
             );
             return results;
         }
+
         const results = await collection
             .find({ _id: new mongo.ObjectId(id) })
             .toArray();
@@ -79,7 +79,7 @@ export const updatePosts = async (
     try {
         const updateData = {
             $set: { ...update }
-        };  
+        };
         const results = await collection.updateOne(
             { _id: new mongo.ObjectId(id) },
             updateData

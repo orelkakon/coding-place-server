@@ -22,7 +22,7 @@ const port = config.get("port")
 const start = async () => {
     await connect();
 
-    app.get('/sanity', async (req, res) => {
+    app.get('/sanity', async (_req, res) => {
         res.send("'CodingPlace;' server is online :)")
     });
 
