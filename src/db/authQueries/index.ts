@@ -12,11 +12,11 @@ export const signUp = async (data: User) => {
 
     try {
         const insertResult = await collection.insertOne(data);
-        loggerInfo(`Success to insert new user to mongoDB`);
+        loggerInfo(`${data.username} Success to join as a new user to mongoDB`);
         return insertResult;
     } catch (error: any) {
         loggerError(
-            `Failed to insert new user to mongoDB. ${error}`
+            `${data.username} Failed to join as a new user to mongoDB. ${error}`
         );
     }
 };
@@ -30,11 +30,11 @@ export const signIn = async (data: User) => {
     try {
         const insertResult = await collection.insertOne(data);
 
-        loggerInfo(`Success to insert new user to mongoDB`);
+        loggerInfo(`${data.username} Success to login`);
         return insertResult;
     } catch (error: any) {
         loggerError(
-            `Failed to insert new user to mongoDB. ${error}`
+            `${data.username} Failed to login. ${error}`
         );
     }
 };

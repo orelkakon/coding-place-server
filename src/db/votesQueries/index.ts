@@ -31,14 +31,12 @@ export const updatePostVote = async (
             updateData
         );
         loggerInfo(
-            `Success to update ${JSON.stringify(
-                results
-            )} on ${collectionName} in mongoDB`
+            `Success to update vote of post on ${collectionName} in mongoDB`
         );
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to update something on ${collectionName} in mongoDB. ${error}`
+            `Failed to update vote of post on ${collectionName} in mongoDB. ${error}`
         );
     }
 };

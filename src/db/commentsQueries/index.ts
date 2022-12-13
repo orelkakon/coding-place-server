@@ -16,11 +16,11 @@ export const insertNewComment = async (collectionName: string, id: string, data:
             { _id: new mongo.ObjectId(id) },
             { $push: { comments: data } }
         );
-        loggerInfo(`Success to insert ${JSON.stringify(data)} to ${collectionName} in mongoDB`);
+        loggerInfo(`Success to insert new comment to ${collectionName} in mongoDB`);
         return insertResult;
     } catch (error: any) {
         loggerError(
-            `Failed to insert ${JSON.stringify(data)} to ${collectionName} in mongoDB. ${error}`
+            `Failed to insert new commwnt to ${collectionName} in mongoDB. ${error}`
         );
     }
 };
@@ -35,14 +35,12 @@ export const deleteComment = async (collectionName: string, id: string, commentI
                 $pull: { comments: { commentId } }
             });
         loggerInfo(
-            `Success to delete ${JSON.stringify(
-                results
-            )} on ${collectionName} in mongoDB`
+            `Success to delete comment on ${collectionName} in mongoDB`
         );
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to delete something on ${collectionName} in mongoDB. ${error}`
+            `Failed to delete comment on ${collectionName} in mongoDB. ${error}`
         );
     }
 };
@@ -64,14 +62,12 @@ export const updateComment = async (
             updateData
         );
         loggerInfo(
-            `Success to update ${JSON.stringify(
-                results
-            )} on ${collectionName} in mongoDB`
+            `Success to update comment on ${collectionName} in mongoDB`
         );
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to update something on ${collectionName} in mongoDB. ${error}`
+            `Failed to update comment on ${collectionName} in mongoDB. ${error}`
         );
     }
 };
@@ -93,14 +89,12 @@ export const markComment = async (
         );
         await closePost(collectionName, id)
         loggerInfo(
-            `Success to update ${JSON.stringify(
-                results
-            )} on ${collectionName} in mongoDB`
+            `Success to mark comment on ${collectionName} in mongoDB`
         );
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to update something on ${collectionName} in mongoDB. ${error}`
+            `Failed to mark comment on ${collectionName} in mongoDB. ${error}`
         );
     }
 };

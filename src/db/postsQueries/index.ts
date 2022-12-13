@@ -12,11 +12,11 @@ export const insertNewPost = async (collectionName: string, data: Post) => {
 
     try {
         const insertResult = await collection.insertOne(data);
-        loggerInfo(`Success to insert ${data} to ${collectionName} in mongoDB`);
+        loggerInfo(`Success to insert new post to ${collectionName} in mongoDB`);
         return insertResult;
     } catch (error: any) {
         loggerError(
-            `Failed to insert ${data} to ${collectionName} in mongoDB. ${error}`
+            `Failed to insert new post to ${collectionName} in mongoDB. ${error}`
         );
     }
 };
@@ -42,14 +42,12 @@ export const findPosts = async (
             .find({ _id: new mongo.ObjectId(id) })
             .toArray();
         loggerInfo(
-            `Success to find ${JSON.stringify(
-                results
-            )} on ${collectionName} in mongoDB`
+            `Success to find post on ${collectionName} in mongoDB`
         );
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to find something on ${collectionName} in mongoDB. ${error}`
+            `Failed to find post on ${collectionName} in mongoDB. ${error}`
         );
         throw error;
     }
@@ -61,14 +59,12 @@ export const removePosts = async (collectionName: string, id: string) => {
     try {
         const results = await collection.deleteOne({ _id: new mongo.ObjectId(id) });
         loggerInfo(
-            `Success to delete ${JSON.stringify(
-                results
-            )} on ${collectionName} in mongoDB`
+            `Success to delete post on ${collectionName} in mongoDB`
         );
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to delete something on ${collectionName} in mongoDB. ${error}`
+            `Failed to delete post on ${collectionName} in mongoDB. ${error}`
         );
     }
 };
@@ -89,14 +85,12 @@ export const updatePosts = async (
             updateData
         );
         loggerInfo(
-            `Success to update ${JSON.stringify(
-                results
-            )} on ${collectionName} in mongoDB`
+            `Success to update post on ${collectionName} in mongoDB`
         );
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to update something on ${collectionName} in mongoDB. ${error}`
+            `Failed to update post on ${collectionName} in mongoDB. ${error}`
         );
     }
 };
@@ -116,14 +110,12 @@ export const closePost = async (
             updateData
         );
         loggerInfo(
-            `Success to update ${JSON.stringify(
-                results
-            )} on ${collectionName} in mongoDB`
+            `Success to close post on ${collectionName} in mongoDB`
         );
         return results;
     } catch (error: any) {
         loggerError(
-            `Failed to update something on ${collectionName} in mongoDB. ${error}`
+            `Failed to close post on ${collectionName} in mongoDB. ${error}`
         );
     }
 };
