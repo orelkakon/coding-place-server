@@ -24,9 +24,10 @@ export const findPostsController = async (req, res) => {
     const postId = req.params.id
     const postType = req.params.type
     const username = req.body.username
+    const serachStr = req.body.serachStr
 
     try {
-        const results = await findPosts(postType, postId, username)
+        const results = await findPosts(postType, postId, username, serachStr)
         if (results.length > 0)
             res.send(results)
         else {

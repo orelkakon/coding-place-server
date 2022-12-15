@@ -6,7 +6,8 @@ export const findPostSchema = yup.object({
         type: yup.mixed().oneOf(["jobPosts", "journalPosts", "questionPosts"]),
     }),
     body: yup.object({
-        username: yup.string()
+        username: yup.string(),
+        serachStr: yup.string()
     })
 });
 

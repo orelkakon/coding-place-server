@@ -24,13 +24,15 @@ export const insertNewPost = async (collectionName: string, data: Post) => {
 export const findPosts = async (
     collectionName: string,
     id?: string | undefined,
-    username?: string | undefined
+    username?: string | undefined,
+    serachStr?: string | undefined
 ) => {
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
     try {
         if (!id) {
-            let filter = username ? { author: username } : {}
+            let filter: any = username ? { author: username } : {}
+            filter = serachStr ? { ...filter, content: { $regex: serachStr } } : filter            
             const results = await collection.find(filter).toArray();
             loggerInfo(
                 `Success to find post on ${collectionName} in mongoDB`
