@@ -7,6 +7,7 @@ import { connect } from "./src/db";
 import { postsRouter } from "./src/api/routes/posts";
 import { votesRouter } from "./src/api/routes/votes";
 import { usersRouter } from "./src/api/routes/users";
+import { imagesRouter } from "./src/api/routes/images";
 import { commentsRouter } from "./src/api/routes/comments";
 import { authRouter } from "./src/api/routes/auth";
 import { loggerError, loggerInfo } from "./src/utils/logger";
@@ -28,6 +29,7 @@ const start = async () => {
     });
 
     app.use('/api/posts', verifyToken, postsRouter)
+    app.use('/api/images', verifyToken, imagesRouter)
     app.use('/api/votes', verifyToken, votesRouter)
     app.use('/api/comments', verifyToken, commentsRouter)
     app.use('/api/users', verifyToken, usersRouter)

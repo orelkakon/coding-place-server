@@ -12,6 +12,7 @@ export const signUpSchema = yup.object({
         user: yup.string().required(),
         password: yup.string().required(),
         email: yup.string().required(),
+        sex: yup.string().required().oneOf(["Male", "Female", "Other"]),
         phone: yup.string().required()
     })
 });
