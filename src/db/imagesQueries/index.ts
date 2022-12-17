@@ -4,14 +4,14 @@ import { client } from ".."
 
 const dbName: string = config.get("mongo.dbName");
 
-export const addImageProfile = async (username, image) => {
+export const addImageProfile = async (username: string, image: string) => {
     const db = client.db(dbName);
     const collectionName = "users";
     const collection = db.collection(collectionName);
 
-    try {
+    try {        
         const filter = { username }
-        const update = { image }
+        const update = { $set: { image } }
         const results = await collection.updateOne(filter, update);
         loggerInfo(
             `Success to add profile image on ${collectionName} in mongoDB`
