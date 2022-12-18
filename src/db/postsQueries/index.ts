@@ -3,7 +3,6 @@ import config from "config";
 import { Post } from "../../api/utils/types";
 import { loggerError, loggerInfo } from "../../utils/logger";
 import { client } from "./.."
-import { MongoFilter } from "./../../utils/types"
 const dbName: string = config.get("mongo.dbName");
 
 export const insertNewPost = async (collectionName: string, data: Post) => {

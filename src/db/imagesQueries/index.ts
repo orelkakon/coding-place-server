@@ -9,7 +9,7 @@ export const addImageProfile = async (username: string, image: string) => {
     const collectionName = "users";
     const collection = db.collection(collectionName);
 
-    try {        
+    try {
         const filter = { username }
         const update = { $set: { image } }
         const results = await collection.updateOne(filter, update);

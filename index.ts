@@ -1,7 +1,6 @@
 import express from "express";
 import config from "config";
 import cors from "cors";
-import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import { connect } from "./src/db";
 import { postsRouter } from "./src/api/routes/posts";

@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-export const profileImageSchema = yup.object({
+export const uploadProfileImageSchema = yup.object({
     params: yup.object({
         username: yup.string()
     }),
